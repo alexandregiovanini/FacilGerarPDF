@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5oi2ipppK6A=",
+  "dgSpecHash": "TKpyQM3P8l8=",
   "success": true,
-  "projectFilePath": "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj",
+  "projectFilePath": "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\a_gio\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\a_gio\\.nuget\\packages\\itext\\9.5.0\\itext.9.5.0.nupkg.sha512",
@@ -21,19 +21,23 @@
     "C:\\Users\\a_gio\\.nuget\\packages\\microsoft.office.interop.word\\15.0.4797.1004\\microsoft.office.interop.word.15.0.4797.1004.nupkg.sha512",
     "C:\\Users\\a_gio\\.nuget\\packages\\newtonsoft.json\\9.0.1\\newtonsoft.json.9.0.1.nupkg.sha512",
     "C:\\Users\\a_gio\\.nuget\\packages\\system.security.cryptography.pkcs\\6.0.5\\system.security.cryptography.pkcs.6.0.5.nupkg.sha512",
-    "C:\\Users\\a_gio\\.nuget\\packages\\system.security.cryptography.xml\\6.0.2\\system.security.cryptography.xml.6.0.2.nupkg.sha512"
+    "C:\\Users\\a_gio\\.nuget\\packages\\system.security.cryptography.xml\\6.0.2\\system.security.cryptography.xml.6.0.2.nupkg.sha512",
+    "C:\\Users\\a_gio\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\10.0.5\\microsoft.netcore.app.runtime.win-x64.10.0.5.nupkg.sha512",
+    "C:\\Users\\a_gio\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\10.0.5\\microsoft.windowsdesktop.app.runtime.win-x64.10.0.5.nupkg.sha512",
+    "C:\\Users\\a_gio\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\10.0.5\\microsoft.aspnetcore.app.runtime.win-x64.10.0.5.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1903",
       "level": "Warning",
       "message": "O pacote 'Newtonsoft.Json' 9.0.1 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
-      "projectPath": "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj",
+      "projectPath": "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj",
+      "filePath": "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj",
       "libraryId": "Newtonsoft.Json",
       "targetGraphs": [
-        "net10.0"
+        "net10.0",
+        "net10.0/win-x64"
       ]
     }
   ]

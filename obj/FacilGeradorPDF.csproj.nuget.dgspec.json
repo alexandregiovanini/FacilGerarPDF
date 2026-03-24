@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj": {}
+    "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj": {}
   },
   "projects": {
-    "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj": {
+    "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj",
+        "projectUniqueName": "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj",
         "projectName": "FacilGeradorPDF",
-        "projectPath": "C:\\Pool\\FacilGeradorPDF\\FacilGeradorPDF.csproj",
+        "projectPath": "C:\\Pool\\FacilGerarPDF\\FacilGeradorPDF.csproj",
         "packagesPath": "C:\\Users\\a_gio\\.nuget\\packages\\",
-        "outputPath": "C:\\Pool\\FacilGeradorPDF\\obj\\",
+        "outputPath": "C:\\Pool\\FacilGerarPDF\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net10.0": {
@@ -74,12 +74,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.5, 10.0.5]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.5, 10.0.5]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.5, 10.0.5]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -354,6 +368,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

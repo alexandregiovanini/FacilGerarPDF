@@ -10,6 +10,7 @@ using iText.Layout.Borders;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
+using iText.IO.Image;
 
 class Program
 {
@@ -20,6 +21,7 @@ class Program
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string inputTxt = System.IO.Path.Combine(baseDir, "etiqueta.txt");
             string outputPdf = System.IO.Path.Combine(baseDir, "etiquetas.pdf");
+            string logoPath = System.IO.Path.Combine(baseDir, "logof.png");
 
             if (!File.Exists(inputTxt))
             {
@@ -27,66 +29,131 @@ class Program
                 return;
             }
 
-            // Lê o conteúdo do arquivo TXT em UTF-8
-            string conteudo = File.ReadAllText(inputTxt, Encoding.UTF8);
+            if (!File.Exists(logoPath))
+            {
+                Console.WriteLine("Falha: arquivo logof.png não encontrado.");
+                return;
+            }
 
-            // Normaliza quebras de linha
+            string conteudo = File.ReadAllText(inputTxt, Encoding.UTF8);
             string[] linhas = conteudo.Replace("\r", "")
                                       .Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-            // Carrega fonte em negrito
+            if (linhas.Length < 2)
+            {
+                Console.WriteLine("Arquivo etiqueta.txt não contém dados suficientes.");
+                return;
+            }
+
+            // Detecta pelo primeiro campo do cabeçalho
+            string[] cabecalhoCampos = linhas[0].Split(';');
+            string primeiroCampo = cabecalhoCampos[0].Trim();
+
+            bool formatoFuncionario = primeiroCampo.Equals("CodEmpresa", StringComparison.OrdinalIgnoreCase);
+            bool formatoEmpresa = primeiroCampo.Equals("Cod", StringComparison.OrdinalIgnoreCase);
+
             var fontBold = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.HELVETICA_BOLD);
 
-            // Define tamanho da etiqueta: 10cm x 15cm
-            float largura = 425.25f;  
-            float altura = 283.5f; 
-            PageSize etiquetaSize = new PageSize(largura, altura);
+            PageSize primeiraPaginaSize = formatoFuncionario
+                ? new PageSize(425.25f, 283.5f) // landscape 15x10 cm
+                : new PageSize(283.5f, 425.25f); // portrait 10x15 cm
 
             using (PdfWriter writer = new PdfWriter(outputPdf))
             using (PdfDocument pdf = new PdfDocument(writer))
-            using (Document document = new Document(pdf, etiquetaSize))
+            using (Document document = new Document(pdf, primeiraPaginaSize))
             {
-                // Margens pequenas para caber bem na etiqueta
                 document.SetMargins(20, 20, 20, 20);
 
-                for (int i = 1; i < linhas.Length; i++) // pula cabeçalho
+                for (int i = 1; i < linhas.Length; i++)
                 {
                     string[] campos = linhas[i].Split(';');
-                    if (campos.Length < 11) continue;
 
-                    string nome = campos[3].Trim();
-                    string matricula = campos[5].Trim(); // CodigoNaEmpresa
-                    string codEmpresa = campos[0].Trim();
-                    string nomeEmpresa = campos[1].Trim();
+                    if (formatoFuncionario && campos.Length < 11) continue;
+                    if (formatoEmpresa && campos.Length < 12) continue;
 
-                    if (i > 1) document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+                    if (i > 1)
+                    {
+                        PageSize etiquetaSize = formatoFuncionario
+                            ? new PageSize(425.25f, 283.5f)
+                            : new PageSize(283.5f, 425.25f);
 
-                    // Container centralizado
+                        document.Add(new AreaBreak(etiquetaSize));
+                    }
+
                     Div etiqueta = new Div()
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetHorizontalAlignment(HorizontalAlignment.CENTER);
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetHorizontalAlignment(HorizontalAlignment.LEFT);
 
-                    etiqueta.Add(new Paragraph($"NOME - {nome}")
-                        .SetFont(fontBold).SetFontSize(14));
+                    // Logo no topo
+                    Image logo = new Image(ImageDataFactory.Create(logoPath))
+                        .ScaleToFit(120, 60);
+                    etiqueta.Add(logo);
 
-                    etiqueta.Add(new Paragraph($"MATRÍCULA - {matricula}")
-                        .SetFont(fontBold).SetFontSize(14));
+                    if (formatoFuncionario)
+                    {
+                        string codEmpresa = campos[0].Trim();
+                        string nomeEmpresa = campos[1].Trim();
+                        string nomeFuncionario = campos[3].Trim();
+                        string matricula = campos[4].Trim(); // Cod
+                        string codigoNaEmpresa = campos[5].Trim();
 
-                    etiqueta.Add(new Paragraph($"{codEmpresa} - {nomeEmpresa}")
-                        .SetFont(fontBold).SetFontSize(12));
-
-                    etiqueta.Add(new Paragraph("\n"));
-
-                    etiqueta.Add(new Paragraph(
+                        etiqueta.Add(new Paragraph($"NOME - {nomeFuncionario}")
+                            .SetFont(fontBold).SetFontSize(14));
+                        etiqueta.Add(new Paragraph($"MATRÍCULA - {matricula}")
+                            .SetFont(fontBold).SetFontSize(14));
+                        etiqueta.Add(new Paragraph($"{codEmpresa} - {nomeEmpresa}")
+                            .SetFont(fontBold).SetFontSize(12));
+                        etiqueta.Add(new Paragraph("\n"));
+                        etiqueta.Add(new Paragraph(
 @"ATENÇÃO
 NÃO JOGAR ESSE ENVELOPE FORA, VOCÊ VAI PRECISAR
 VOCÊ DEVE BAIXAR O APLICATIVO FÁCILCARD
 USAR A MATRÍCULA ACIMA COMO SENHA
 PARA CADASTRAR O APLICATIVO")
-                        .SetFont(fontBold).SetFontSize(11)
-                        .SetBackgroundColor(ColorConstants.LIGHT_GRAY)
-                        .SetBorder(new SolidBorder(ColorConstants.BLACK, 1))
-                        .SetTextAlignment(TextAlignment.CENTER));
+                            .SetFont(fontBold).SetFontSize(11)
+                            .SetBackgroundColor(ColorConstants.LIGHT_GRAY)
+                            .SetBorder(new SolidBorder(ColorConstants.BLACK, 1))
+                            .SetTextAlignment(TextAlignment.LEFT));
+                    }
+                    else if (formatoEmpresa)
+                    {
+                        string fantasia = campos[2].Trim();
+                        string endereco = campos[7].Trim();
+                        string bairro = campos[8].Trim();
+                        string cidade = campos[9].Trim();
+                        string estado = campos[10].Trim();
+                        string cep = campos[11].Trim();
+
+                        etiqueta.Add(new Paragraph("Remetente: Facilcard Serviços")
+                            .SetFont(fontBold).SetFontSize(12));
+                        etiqueta.Add(new Paragraph("Rua Ipiranga 957, Carmo Mogi das Cruzes")
+                            .SetFont(fontBold).SetFontSize(12));
+                        etiqueta.Add(new Paragraph("CEP 08730-000")
+                            .SetFont(fontBold).SetFontSize(12));
+
+                        etiqueta.Add(new Paragraph("\n"));
+
+                        // Moldura apenas no bloco do destinatário
+                        Div destinatario = new Div()
+                            .SetBorder(new SolidBorder(ColorConstants.BLACK, 1))
+                            .SetPadding(5);
+
+                        destinatario.Add(new Paragraph("Destinatário:")
+                            .SetFont(fontBold).SetFontSize(12));
+                        destinatario.Add(new Paragraph($"{fantasia}")
+                            .SetFont(fontBold).SetFontSize(14));
+                        destinatario.Add(new Paragraph($"{endereco}, {bairro}")
+                            .SetFont(fontBold).SetFontSize(12));
+                        destinatario.Add(new Paragraph($"{cidade} - {estado}")
+                            .SetFont(fontBold).SetFontSize(12));
+                        destinatario.Add(new Paragraph($"CEP {cep}")
+                            .SetFont(fontBold).SetFontSize(12));
+                        destinatario.Add(new Paragraph("\n"));
+                        destinatario.Add(new Paragraph("A/Departamento de RH")
+                            .SetFont(fontBold).SetFontSize(12));
+
+                        etiqueta.Add(destinatario);
+                    }
 
                     document.Add(etiqueta);
                 }
