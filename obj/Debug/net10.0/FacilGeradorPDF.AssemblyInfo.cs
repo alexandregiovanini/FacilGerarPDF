@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FacilGeradorPDF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+293293898370cbdb290d032e9312016a224bbaa8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+443ce4f78508e5df4c46a107ef8b9948391d52f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("FacilGeradorPDF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FacilGeradorPDF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

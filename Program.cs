@@ -92,14 +92,14 @@ class Program
                     if (formatoFuncionario)
                     {
                         string codEmpresa = campos[0].Trim();
-                        string nomeEmpresa = campos[1].Trim();
+                        string nomeEmpresa = campos[2].Trim();
                         string nomeFuncionario = campos[3].Trim();
-                        string matricula = campos[4].Trim(); // Cod
+                        string Cod = campos[4].Trim(); // Cod
                         string codigoNaEmpresa = campos[5].Trim();
 
                         etiqueta.Add(new Paragraph($"NOME - {nomeFuncionario}")
                             .SetFont(fontBold).SetFontSize(14));
-                        etiqueta.Add(new Paragraph($"MATRÍCULA - {matricula}")
+                        etiqueta.Add(new Paragraph($"MATRÍCULA - {codigoNaEmpresa}")
                             .SetFont(fontBold).SetFontSize(14));
                         etiqueta.Add(new Paragraph($"{codEmpresa} - {nomeEmpresa}")
                             .SetFont(fontBold).SetFontSize(12));
@@ -138,7 +138,8 @@ PARA CADASTRAR O APLICATIVO")
                             .SetBorder(new SolidBorder(ColorConstants.BLACK, 1))
                             .SetPadding(5);
 
-                        destinatario.Add(new Paragraph("Destinatário:")
+                        string codEmpresa = campos[0].Trim(); // o campo "Cod"
+                        destinatario.Add(new Paragraph($"Destinatário: {codEmpresa}")
                             .SetFont(fontBold).SetFontSize(12));
                         destinatario.Add(new Paragraph($"{fantasia}")
                             .SetFont(fontBold).SetFontSize(14));
